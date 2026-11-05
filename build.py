@@ -11,7 +11,7 @@ import shutil
 
 ROOT = pathlib.Path(__file__).resolve().parent
 OUT = ROOT / "docs"
-DOMAIN = "apps.maxpog.com"
+DOMAIN = "maxpog.com"
 MARKER = "<!-- body -->"
 
 HEAD = """<!doctype html>
@@ -49,6 +49,9 @@ def main() -> None:
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(wrap(src), encoding="utf-8")
         print("built", dest.relative_to(ROOT))
+        for asset in src.parent.iterdir():
+            if asset.is_file() and asset.name != "index.html" and not asset.name.startswith("."):
+                shutil.copy(asset, dest.parent / asset.name)
     shutil.copy(ROOT / "nonstop" / "favicon.svg", OUT / "favicon.svg")
     (OUT / "CNAME").write_text(DOMAIN + "\n")
     (OUT / ".nojekyll").write_text("")

@@ -1,11 +1,12 @@
 # Vibe Apps
 
-Small browser tools by Max Pog, served at https://apps.maxpog.com via GitHub Pages
+Small browser tools by Max Pog, served at https://maxpog.com via GitHub Pages
 (public repo `pogumax/vibe-apps`, branch `main`, folder `docs/`).
 
-| App | Folder | URL |
+| Page | Folder | URL |
 |---|---|---|
-| Don't Stop Writing | `nonstop/` | https://apps.maxpog.com/nonstop/ |
+| Personal page | `home/` | https://maxpog.com/ |
+| Don't Stop Writing | `nonstop/` | https://maxpog.com/nonstop/ |
 
 ## How it works
 
@@ -19,7 +20,8 @@ Small browser tools by Max Pog, served at https://apps.maxpog.com via GitHub Pag
 
 | Type | Host | Value |
 |---|---|---|
-| CNAME | `apps` | `pogumax.github.io.` |
+| A | `@` | `185.199.108.153`, `.109.153`, `.110.153`, `.111.153` |
+| CNAME | `www` | `pogumax.github.io.` |
 
 Everything is static and runs in the visitor's browser: no server, no database. Texts stay in
 the visitor's own browser storage.
