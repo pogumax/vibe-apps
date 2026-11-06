@@ -52,7 +52,6 @@ def main() -> None:
         for asset in src.parent.iterdir():
             if asset.is_file() and asset.name != "index.html" and not asset.name.startswith("."):
                 shutil.copy(asset, dest.parent / asset.name)
-    shutil.copy(ROOT / "nonstop" / "favicon.svg", OUT / "favicon.svg")
     (OUT / "CNAME").write_text(DOMAIN + "\n")
     (OUT / ".nojekyll").write_text("")
 

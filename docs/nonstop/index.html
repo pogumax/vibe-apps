@@ -10,137 +10,156 @@ img{max-width:100%}
 [hidden]{display:none!important}
 </style>
 <title>Don't Stop Writing</title>
+<meta name="description" content="Write without stopping for 3 to 60 minutes. Pause too long and the screen goes red. When the time is up, keep going or copy your text.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23151A25'/%3E%3Crect x='11' y='17' width='42' height='7' rx='3.5' fill='%23FAFBFD'/%3E%3Crect x='11' y='31' width='24' height='7' rx='3.5' fill='%23FAFBFD'/%3E%3Crect x='40' y='27' width='8' height='22' rx='2.5' fill='%23DB1F2A'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Big+Shoulders+Text:wght@500;700&family=Brygada+1918:ital,wght@0,400;0,500;1,400&display=swap">
 <style>
-/* Layout: one quiet sheet of paper; time runs along the top edge, counts sit in a hairline footer, red rises from the edges when you stop. */
+/* Layout: a race clock over a blank sheet. Condensed stadium numerals for time, a book serif for your words; green means keep going, red means you stopped. */
 :root {
-  --bg: #ECEFF4;
-  --paper: #FAFBFD;
-  --ink: #151A25;
-  --muted: #5E6678;
-  --line: #D3D8E2;
-  --accent: #2E47D1;
-  --accent-ink: #FFFFFF;
-  --danger: #DB1F2A;
-  --font-display: "Unbounded", "Arial Black", system-ui, sans-serif;
-  --font-text: "Literata", Georgia, "Times New Roman", serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --bg: #F1F3F2;
+  --paper: #FFFFFF;
+  --ink: #121614;
+  --muted: #5D6762;
+  --line: #D6DCD9;
+  --go: #0E7A57;
+  --go-soft: #DDF1E8;
+  --go-ink: #FFFFFF;
+  --danger: #D91E2A;
+  --font-clock: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --font-ui: "Big Shoulders Text", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --font-text: "Brygada 1918", Georgia, "Times New Roman", serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0E121A; --paper: #141924; --ink: #E5E8EF; --muted: #8B94A7; --line: #262E3F;
-    --accent: #8197FF; --accent-ink: #0E121A; --danger: #FF3B45; color-scheme: dark;
+    --bg: #0F1211; --paper: #161A18; --ink: #E7ECE9; --muted: #8D9791; --line: #27302C;
+    --go: #3CCB95; --go-soft: #173328; --go-ink: #0F1211; --danger: #FF4A4F; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0E121A; --paper: #141924; --ink: #E5E8EF; --muted: #8B94A7; --line: #262E3F;
-  --accent: #8197FF; --accent-ink: #0E121A; --danger: #FF3B45; color-scheme: dark;
+  --bg: #0F1211; --paper: #161A18; --ink: #E7ECE9; --muted: #8D9791; --line: #27302C;
+  --go: #3CCB95; --go-soft: #173328; --go-ink: #0F1211; --danger: #FF4A4F; color-scheme: dark;
 }
 
+*, *::before, *::after { box-sizing: border-box; }
 html, body { height: 100%; }
 body {
   background: var(--bg); color: var(--ink);
   font-family: var(--font-text); font-size: 17px;
-  display: flex; flex-direction: column;
-  overflow: hidden;
+  display: flex; flex-direction: column; overflow: hidden;
 }
 button { font: inherit; color: inherit; cursor: pointer; }
-:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--go); outline-offset: 3px; }
 
 .screen { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .wrap {
-  width: 100%; max-width: 860px; margin: 0 auto;
+  width: 100%; max-width: 880px; margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 .label {
-  font-family: var(--font-mono); font-size: 13px; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--muted);
+  font-family: var(--font-ui); font-weight: 700; font-size: 14px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
 }
 
 /* ---------- setup ---------- */
 #setup { overflow-y: auto; }
-#setup .wrap { padding-block: clamp(20px, 4.5vh, 52px) 28px; display: flex; flex-direction: column; gap: clamp(22px, 3.6vh, 34px); }
+#setup .wrap { padding-block: clamp(18px, 4vh, 48px) 28px; display: flex; flex-direction: column; gap: clamp(20px, 3.4vh, 32px); }
 .brand h1 {
-  font-family: var(--font-display); font-weight: 700; margin: 0;
-  font-size: clamp(34px, 6.4vw, 58px); line-height: 1.02; letter-spacing: -.025em;
-  text-wrap: balance;
+  font-family: var(--font-clock); font-weight: 800; margin: 0; text-transform: uppercase;
+  font-size: clamp(54px, 10vw, 104px); line-height: .86; letter-spacing: .005em;
 }
 .brand h1 em { font-style: normal; color: var(--danger); }
-.brand p.lead { color: var(--ink); font-size: clamp(18px, 2.3vw, 21px); line-height: 1.4; margin-top: 16px; }
-.brand p { margin: 10px 0 0; color: var(--muted); line-height: 1.5; font-size: clamp(16px, 1.9vw, 17px); }
+.brand .lead { margin: 14px 0 0; font-size: clamp(18px, 2.3vw, 21px); line-height: 1.4; }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin: 0; padding: 0; list-style: none; }
+@media (max-width: 640px) { .steps { grid-template-columns: 1fr; } }
+.steps li { background: var(--paper); padding: 12px 16px; display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: baseline; }
+.steps b { font-family: var(--font-clock); font-weight: 800; font-size: 30px; line-height: 1; color: var(--go); }
+.steps span { font-size: 15px; line-height: 1.4; color: var(--muted); }
+.steps span strong { color: var(--ink); font-weight: 500; }
 
 .field { display: flex; flex-direction: column; gap: 12px; }
-.minutes-row { display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap; }
+.minutes-row { display: flex; align-items: flex-end; gap: 14px; }
 .minutes-big {
-  font-family: var(--font-display); font-weight: 500; font-size: clamp(72px, 13vw, 112px); line-height: .85;
-  font-variant-numeric: tabular-nums; min-width: 2ch; letter-spacing: -.04em;
+  font-family: var(--font-clock); font-weight: 800; font-size: clamp(84px, 14vw, 128px); line-height: .8;
+  font-variant-numeric: tabular-nums; min-width: 1.4ch;
 }
-.minutes-unit { font-family: var(--font-mono); color: var(--muted); padding-bottom: 8px; font-size: 19px; }
-input[type="range"] { width: 100%; accent-color: var(--accent); height: 30px; cursor: pointer; }
-.chips { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.minutes-unit { font-family: var(--font-ui); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); padding-bottom: 6px; font-size: 18px; }
+input[type="range"] { width: 100%; accent-color: var(--go); height: 30px; cursor: pointer; }
+.chips { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
 @media (max-width: 560px) { .chips { grid-template-columns: repeat(4, 1fr); } }
-.chip {
-  border: 2px solid var(--line); background: var(--paper); border-radius: 12px;
-  padding: 12px 0; font-family: var(--font-display); font-weight: 500; font-size: 18px;
+.chip, .seg button {
+  border: 2px solid var(--line); background: var(--paper); border-radius: 10px;
+  padding: 10px 0; font-family: var(--font-clock); font-weight: 700; font-size: 24px; line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.chip:hover { border-color: var(--muted); }
-.chip[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
-
+.chip:hover, .seg button:hover { border-color: var(--muted); }
+.chip[aria-pressed="true"], .seg button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
 .seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.seg button {
-  border: 2px solid var(--line); background: var(--paper); border-radius: 12px;
-  padding: 13px 8px; font-family: var(--font-display); font-weight: 500; font-size: 17px;
-}
-.seg button:hover { border-color: var(--muted); }
-.seg button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
-.hint { font-size: 15.5px; color: var(--muted); line-height: 1.5; margin: 0; }
+.seg button small { font-family: var(--font-ui); font-size: 15px; letter-spacing: .06em; margin-left: 2px; }
+.hint { font-size: 15px; color: var(--muted); line-height: 1.5; margin: 0; }
 
-.start-row { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+.start-row { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
 .btn {
-  border: 0; border-radius: 14px; padding: 18px 40px;
-  background: var(--accent); color: var(--accent-ink);
-  font-family: var(--font-display); font-weight: 700; font-size: 19px; letter-spacing: .01em;
+  border: 2px solid transparent; border-radius: 12px; padding: 14px 34px;
+  background: var(--go); color: var(--go-ink);
+  font-family: var(--font-ui); font-weight: 700; font-size: 22px; letter-spacing: .08em; text-transform: uppercase;
 }
 .btn:hover { filter: brightness(1.08); }
-#start { min-width: min(100%, 320px); }
-.btn.ghost { background: transparent; color: var(--ink); border: 2px solid var(--line); }
-.linkish { background: none; border: 0; padding: 0; color: var(--muted); font-family: var(--font-mono); font-size: 15px; text-decoration: underline; text-underline-offset: 3px; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn.small { padding: 8px 16px; font-size: 16px; border-radius: 9px; }
+#start { min-width: min(100%, 300px); }
+.kbd { font-family: var(--font-ui); font-size: 15px; color: var(--muted); letter-spacing: .04em; }
+.linkish { background: none; border: 0; padding: 0; color: var(--muted); font-family: var(--font-ui); font-weight: 500; font-size: 16px; letter-spacing: .04em; text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- writing ---------- */
 #write { position: relative; }
-.progress { height: 4px; background: var(--line); flex: none; }
-.progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .25s linear; }
-.topbar {
-  flex: none; display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  padding-block: 14px;
+.progress { height: 5px; background: var(--line); flex: none; }
+.progress i { display: block; height: 100%; width: 0; background: var(--go); transition: width .25s linear; }
+.topbar { flex: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 12px 6px; }
+.status {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-ui); font-weight: 700; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
 }
-.timer { font-family: var(--font-display); font-weight: 500; font-size: 26px; font-variant-numeric: tabular-nums; }
-.status { font-family: var(--font-mono); font-size: 14px; color: var(--muted); }
-.status.alarm { color: var(--danger); font-weight: 500; }
+.status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--line); flex: none; }
+.status.on { color: var(--go); }
+.status.on::before { background: var(--go); }
+.status.alarm { color: var(--danger); }
+.status.alarm::before { background: var(--danger); animation: blink .5s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.timer { font-family: var(--font-clock); font-weight: 800; font-size: 44px; line-height: 1; font-variant-numeric: tabular-nums; }
+.timer.over { color: var(--go); }
+.pause-meter { height: 3px; background: transparent; flex: none; }
+.pause-meter i { display: block; height: 100%; width: 0; background: var(--danger); }
+
+.bell {
+  flex: none; background: var(--go-soft); border-block: 1px solid var(--line);
+}
+.bell .wrap { display: flex; align-items: center; justify-content: space-between; gap: 10px 18px; flex-wrap: wrap; padding-block: 10px; }
+.bell p { margin: 0; font-size: 16px; line-height: 1.4; min-width: 0; }
+.bell p strong { font-family: var(--font-ui); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--go); margin-right: 6px; }
+.bell .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
 .editor-box { flex: 1; min-height: 0; display: flex; }
 .editor-box .wrap { display: flex; flex: 1; min-height: 0; }
 textarea#editor {
   flex: 1; min-height: 0; width: 100%; resize: none; border: 0; outline: none;
   background: transparent; color: var(--ink);
-  font-family: var(--font-text); font-size: 21px; line-height: 1.7;
-  padding-block: 8px 40px; caret-color: var(--accent);
+  font-family: var(--font-text); font-size: 22px; line-height: 1.65;
+  padding-block: 12px 48px; caret-color: var(--go);
   transition: filter .15s linear;
 }
 textarea#editor::placeholder { color: var(--muted); font-style: italic; }
 .statsbar {
-  flex: none; border-top: 1px solid var(--line);
-  padding-block: 11px calc(11px + env(safe-area-inset-bottom, 0px));
-  font-family: var(--font-mono); font-size: 13.5px; color: var(--muted);
+  flex: none; border-top: 1px solid var(--line); background: var(--bg);
+  padding-block: 10px calc(10px + env(safe-area-inset-bottom, 0px));
+  font-family: var(--font-ui); font-weight: 500; font-size: 16px; letter-spacing: .03em; color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
 .statsbar .wrap { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: space-between; align-items: center; }
-.statsbar span b { font-weight: 500; color: var(--ink); }
-.giveup { font-size: 13.5px; }
+.statsbar span b { font-weight: 700; color: var(--ink); }
 
 #danger {
   position: fixed; inset: 0; pointer-events: none; opacity: 0; z-index: 5;
@@ -154,39 +173,39 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
 
 /* ---------- result ---------- */
 #result { overflow-y: auto; }
-#result .wrap { padding-block: 44px 36px; display: flex; flex-direction: column; gap: 26px; }
+#result .wrap { padding-block: 36px 32px; display: flex; flex-direction: column; gap: 22px; }
 .result-head h2 {
-  font-family: var(--font-display); font-weight: 700; margin: 0;
-  font-size: clamp(32px, 6vw, 52px); letter-spacing: -.02em; text-wrap: balance;
+  font-family: var(--font-clock); font-weight: 800; margin: 0; text-transform: uppercase;
+  font-size: clamp(40px, 7vw, 68px); line-height: .92; text-wrap: balance;
 }
 .result-head h2.fail { color: var(--danger); }
-.result-head p { margin: 10px 0 0; color: var(--muted); font-size: 19px; line-height: 1.5; }
+.result-head h2.win { color: var(--go); }
+.result-head p { margin: 10px 0 0; color: var(--muted); font-size: 18px; line-height: 1.5; }
 .figures {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-  background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
 }
 @media (max-width: 560px) { .figures { grid-template-columns: repeat(2, 1fr); } }
-.figures div { background: var(--paper); padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
-.figures .label { font-size: 12px; }
-.figures b { font-family: var(--font-display); font-weight: 500; font-size: 28px; font-variant-numeric: tabular-nums; }
+.figures div { background: var(--paper); padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; }
+.figures b { font-family: var(--font-clock); font-weight: 800; font-size: 38px; line-height: 1; font-variant-numeric: tabular-nums; }
 .textout {
-  background: var(--paper); border: 1px solid var(--line); border-radius: 14px;
-  padding: 20px 22px; max-height: 44vh; overflow-y: auto;
-  font-size: 18px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere;
-  user-select: text;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 22px; max-height: 42vh; overflow-y: auto;
+  font-size: 19px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text;
 }
 .textout.empty { color: var(--muted); font-style: italic; }
-.actions { display: flex; flex-wrap: wrap; gap: 14px; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; }
 
 .toast {
   position: fixed; left: 50%; transform: translateX(-50%);
   bottom: calc(64px + env(safe-area-inset-bottom, 0px));
-  background: var(--ink); color: var(--paper); border-radius: 12px;
-  padding: 12px 18px; font-family: var(--font-mono); font-size: 15px; z-index: 10;
+  background: var(--ink); color: var(--paper); border-radius: 10px;
+  padding: 10px 18px; font-family: var(--font-ui); font-weight: 700; letter-spacing: .06em; font-size: 16px; z-index: 10;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .progress i, textarea#editor { transition: none; }
+  .status.alarm::before { animation: none; }
 }
 </style>
 </head>
@@ -197,8 +216,13 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
     <div class="brand">
       <h1>Don't <em>stop</em> writing</h1>
       <p class="lead">For brainstorming and breaking through on any task that takes hard thinking or writing.</p>
-      <p>Pick how long you'll write without a break. The clock starts on your first keystroke. Stop typing and the screen blurs and turns red. Stay stopped and your text is wiped and the session is over. You can still copy what you wrote.</p>
     </div>
+
+    <ol class="steps">
+      <li><b>1</b><span><strong>Pick a time.</strong> The clock starts on your first keystroke.</span></li>
+      <li><b>2</b><span><strong>Don't stop.</strong> Pause too long and the screen turns red, then your page is wiped.</span></li>
+      <li><b>3</b><span><strong>Make it to the bell.</strong> Then keep writing as long as you like, or copy your text.</span></li>
+    </ol>
 
     <div class="field">
       <span class="label" id="min-label">Session length</span>
@@ -208,6 +232,7 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
       </div>
       <input type="range" id="minutes" min="1" max="60" step="1" value="15" aria-labelledby="min-label">
       <div class="chips" id="presets">
+        <button class="chip" data-m="3">3</button>
         <button class="chip" data-m="5">5</button>
         <button class="chip" data-m="10">10</button>
         <button class="chip" data-m="15">15</button>
@@ -221,15 +246,16 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
     <div class="field">
       <span class="label">Pause allowed</span>
       <div class="seg" id="grace">
-        <button data-v="3">3 sec</button>
-        <button data-v="4">4 sec</button>
-        <button data-v="5">5 sec</button>
+        <button data-v="3">3<small>sec</small></button>
+        <button data-v="4">4<small>sec</small></button>
+        <button data-v="5">5<small>sec</small></button>
       </div>
       <p class="hint" id="grace-hint"></p>
     </div>
 
     <div class="start-row">
       <button class="btn" id="start">Start writing</button>
+      <span class="kbd">or press Enter</span>
       <button class="linkish" id="open-last" hidden>Last text</button>
     </div>
   </div>
@@ -239,18 +265,29 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
 <section class="screen" id="write" hidden>
   <div class="progress"><i id="bar"></i></div>
   <div class="wrap topbar">
-    <span class="status" id="status">Start typing. The clock starts on your first letter.</span>
+    <span class="status" id="status">Ready</span>
     <span class="timer" id="timer">15:00</span>
+  </div>
+  <div class="pause-meter wrap"><i id="pause-meter"></i></div>
+  <div class="bell" id="bell" hidden>
+    <div class="wrap">
+      <p><strong>Time's up.</strong><span id="bell-text">You made it. Keep writing, nothing will be erased now.</span></p>
+      <div class="actions">
+        <button class="btn small" id="bell-copy">Copy text</button>
+        <button class="btn small ghost" id="bell-round">+15 min round</button>
+        <button class="btn small ghost" id="bell-finish">Finish</button>
+      </div>
+    </div>
   </div>
   <div class="editor-box">
     <div class="wrap">
-      <textarea id="editor" spellcheck="true" placeholder="What's on your mind right now…" aria-label="Your text"></textarea>
+      <textarea id="editor" spellcheck="true" placeholder="Start typing. Whatever comes to mind…" aria-label="Your text"></textarea>
     </div>
   </div>
   <div class="statsbar">
     <div class="wrap">
       <span id="live-stats"></span>
-      <button class="linkish giveup" id="giveup">Give up</button>
+      <button class="linkish" id="giveup">Give up</button>
     </div>
   </div>
   <div id="danger"></div>
@@ -260,12 +297,12 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
 <section class="screen" id="result" hidden>
   <div class="wrap">
     <div class="result-head">
-      <h2 id="res-title">Time's up</h2>
+      <h2 id="res-title">Done</h2>
       <p id="res-sub"></p>
     </div>
     <div class="figures" id="figures"></div>
     <div class="textout" id="textout" tabindex="0"></div>
-    <div class="actions">
+    <div class="row">
       <button class="btn" id="copy">Copy text</button>
       <button class="btn ghost" id="again">New session</button>
     </div>
@@ -282,12 +319,14 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
     get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
   };
-  const pl = (n, word) => `${fmt(n)} ${word}${n === 1 ? '' : 's'}`;
   const fmt = n => n.toLocaleString('en-US');
+  const pl = (n, word) => `${fmt(n)} ${word}${n === 1 ? '' : 's'}`;
   const mmss = ms => {
     const s = Math.max(0, Math.ceil(ms / 1000));
     return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
   };
+  const mmssUp = ms => { const s = Math.max(0, Math.floor(ms / 1000)); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+  const minWord = m => m === 1 ? 'minute' : 'minutes';
 
   function countText(t) {
     const trimmed = t.trim();
@@ -301,17 +340,17 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
   const minLabel = m => m === 0 ? '0 min' : m < 1 ? '< 1 min' : Math.round(m) + ' min';
 
   // ---------- settings ----------
-  const CLOSE_MS = 3000;  // after the pause limit: blur + red ramp, then the session closes
+  const CLOSE_MS = 3000;  // after the pause limit: red ramp, then the page is wiped
   const saved = store.get('nonstop.settings.v3') || {};
   const cfg = { minutes: saved.minutes || 15, grace: [3, 4, 5].includes(saved.grace) ? saved.grace : 3 };
 
   function renderSetup() {
     $('minutes').value = cfg.minutes;
     $('min-big').textContent = cfg.minutes;
-    $('min-unit').textContent = cfg.minutes === 1 ? 'minute' : 'minutes';
+    $('min-unit').textContent = minWord(cfg.minutes);
     document.querySelectorAll('#presets .chip').forEach(b => b.setAttribute('aria-pressed', +b.dataset.m === cfg.minutes));
     document.querySelectorAll('#grace button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.v === cfg.grace));
-    $('grace-hint').textContent = `After ${cfg.grace} seconds without typing the screen blurs and turns red. ${CLOSE_MS / 1000} seconds later your text is wiped from the editor and the session is over. You can still copy what you wrote.`;
+    $('grace-hint').textContent = `Stop typing for ${cfg.grace} seconds and the screen turns red. ${CLOSE_MS / 1000} seconds later the page is wiped and the session ends. You can still copy what you wrote.`;
     store.set('nonstop.settings.v3', cfg);
     const last = store.get('nonstop.last');
     $('open-last').hidden = !(last && last.text);
@@ -323,47 +362,50 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
   $('minutes').addEventListener('input', e => { cfg.minutes = +e.target.value; renderSetup(); });
   $('presets').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { cfg.minutes = +b.dataset.m; renderSetup(); } });
   $('grace').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { cfg.grace = +b.dataset.v; renderSetup(); } });
+
   // ---------- session ----------
+  // phases: armed → writing → free (after the bell, no penalty) ⇄ writing (+round) → result
   let s = null, raf = 0, wakeLock = null;
   const editor = $('editor');
 
   function show(id) { ['setup', 'write', 'result'].forEach(x => $(x).hidden = x !== id); }
+  function setStatus(text, kind) { const el = $('status'); el.textContent = text; el.className = 'status' + (kind ? ' ' + kind : ''); }
 
   function startSession() {
     s = { phase: 'armed', duration: cfg.minutes * 60000, grace: cfg.grace * 1000,
-          startAt: 0, lastInput: 0, longestPause: 0, endedBy: null };
+          firstKey: 0, roundStart: 0, lastInput: 0, bellAt: 0, longestPause: 0, rounds: 0, endedBy: null };
     editor.value = ''; editor.readOnly = false; editor.style.filter = '';
-    $('danger').style.opacity = 0;
-    $('timer').textContent = mmss(s.duration);
+    $('danger').style.opacity = 0; $('pause-meter').style.width = '0';
+    $('timer').textContent = mmss(s.duration); $('timer').classList.remove('over');
     $('bar').style.width = '0%';
-    setStatus('Start typing. The clock starts on your first letter.');
+    $('bell').hidden = true; $('giveup').hidden = false;
+    $('bell-round').textContent = `+${cfg.minutes} min round`;
+    setStatus('Ready · clock starts on your first key');
     updateLive();
     show('write');
     editor.focus();
     try { navigator.wakeLock?.request('screen').then(l => wakeLock = l).catch(() => {}); } catch {}
   }
 
-  function setStatus(text, alarm) { const el = $('status'); el.textContent = text; el.classList.toggle('alarm', !!alarm); }
-
   function updateLive() {
     const c = countText(editor.value);
     $('live-stats').innerHTML =
       `<span><b>${fmt(c.words)}</b> words</span> · ` +
       `<span><b>${fmt(c.chars)}</b> characters</span> · ` +
-      `<span><b>${fmt(c.noSpaces)}</b> without spaces</span> · ` +
+      `<span><b>${fmt(c.noSpaces)}</b> no spaces</span> · ` +
       `<span><b>${fmt(c.sentences)}</b> sentences</span> · ` +
       `<span><b>${fmt(c.paragraphs)}</b> paragraphs</span> · ` +
       `<span>reading ${minLabel(c.readMin)}</span>`;
   }
 
   editor.addEventListener('input', () => {
-    if (!s || s.phase === 'done' || s.phase === 'failed') return;
+    if (!s || s.phase === 'done') return;
     const now = performance.now();
     if (s.phase === 'armed') {
-      s.phase = 'writing'; s.startAt = now; s.lastInput = now;
+      s.phase = 'writing'; s.firstKey = now; s.roundStart = now; s.lastInput = now; s.rounds = 1;
       loop();
     } else {
-      s.longestPause = Math.max(s.longestPause, now - s.lastInput);
+      if (s.phase === 'writing') s.longestPause = Math.max(s.longestPause, now - s.lastInput);
       s.lastInput = now;
     }
     updateLive();
@@ -373,47 +415,95 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
   function loop() {
     cancelAnimationFrame(raf);
     const tick = () => {
-      if (!s || s.phase !== 'writing') return;
+      if (!s || (s.phase !== 'writing' && s.phase !== 'free')) return;
       const now = performance.now();
-      const elapsed = now - s.startAt;
+
+      if (s.phase === 'free') {
+        $('timer').textContent = '+' + mmssUp(now - s.bellAt);
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+
+      const elapsed = now - s.roundStart;
       const remaining = s.duration - elapsed;
       $('timer').textContent = mmss(remaining);
       $('bar').style.width = Math.min(100, elapsed / s.duration * 100) + '%';
-      if (remaining <= 0) return finish('time');
+      if (remaining <= 0) { bell(now); raf = requestAnimationFrame(tick); return; }
 
       const idle = now - s.lastInput;
-      // a faint hint starts one second before the limit, then the full ramp to closing
-      const warnFrom = s.grace - 1000;
+      const warnFrom = s.grace - 1000;   // faint hint one second before the limit
       let level = 0;
       if (idle > warnFrom) level = Math.min(1, (idle - warnFrom) / (CLOSE_MS + 1000));
       $('danger').style.opacity = (level * 0.85).toFixed(3);
       editor.style.filter = level > 0 ? `blur(${(level * 4).toFixed(2)}px)` : '';
+      $('pause-meter').style.width = Math.min(100, idle / (s.grace + CLOSE_MS) * 100) + '%';
 
       const over = idle - s.grace;
       if (over >= CLOSE_MS) return erase();
-      if (over > 0) setStatus(`Keep typing! Erasing in ${Math.ceil((CLOSE_MS - over) / 1000)}…`, true);
-      else setStatus('Writing');
+      if (over > 0) setStatus(`Keep typing! Wiping in ${Math.ceil((CLOSE_MS - over) / 1000)}`, 'alarm');
+      else setStatus('Writing', 'on');
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
+  }
+
+  function chime() {
+    try {
+      const ac = new (window.AudioContext || window.webkitAudioContext)();
+      [[880, 0], [1320, .16]].forEach(([f, t]) => {
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.frequency.value = f; o.type = 'sine';
+        g.gain.setValueAtTime(0.0001, ac.currentTime + t);
+        g.gain.exponentialRampToValueAtTime(0.18, ac.currentTime + t + .02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + t + .6);
+        o.connect(g).connect(ac.destination); o.start(ac.currentTime + t); o.stop(ac.currentTime + t + .65);
+      });
+      setTimeout(() => ac.close(), 1200);
+    } catch {}
+  }
+
+  // time is up: no lock, no penalty — the page stays open so the thought isn't cut off
+  function bell(now) {
+    s.phase = 'free'; s.bellAt = now;
+    $('danger').style.opacity = 0; editor.style.filter = ''; $('pause-meter').style.width = '0';
+    $('bar').style.width = '100%';
+    $('timer').classList.add('over');
+    const total = Math.round((now - s.firstKey) / 60000);
+    $('bell-text').textContent = s.rounds > 1
+      ? `${total} ${minWord(total)} without stopping. Keep writing, nothing will be erased now.`
+      : `${Math.round(s.duration / 60000)} ${minWord(Math.round(s.duration / 60000))} without stopping. Keep writing, nothing will be erased now.`;
+    $('bell').hidden = false; $('giveup').hidden = true;
+    setStatus('Free writing', 'on');
+    chime();
+    const text = editor.value;
+    if (text.trim()) store.set('nonstop.last', { text, at: Date.now(), elapsed: now - s.firstKey, minutes: s.duration / 60000 });
+    editor.focus();
+  }
+
+  function newRound() {
+    if (!s || s.phase !== 'free') return;
+    const now = performance.now();
+    s.phase = 'writing'; s.roundStart = now; s.lastInput = now; s.rounds++;
+    $('bell').hidden = true; $('giveup').hidden = false;
+    $('timer').classList.remove('over'); $('bar').style.width = '0%';
+    setStatus('Writing', 'on');
+    editor.focus();
   }
 
   function release() {
     cancelAnimationFrame(raf);
     try { wakeLock?.release(); } catch {}
     wakeLock = null;
-    $('danger').style.opacity = 0;
-    editor.style.filter = '';
-    editor.readOnly = true;
-    editor.blur();
+    $('danger').style.opacity = 0; editor.style.filter = ''; $('pause-meter').style.width = '0';
+    editor.readOnly = true; editor.blur();
   }
 
   function finish(by) {
     if (!s) return;
     const now = performance.now();
     s.endedBy = by;
-    s.elapsed = s.startAt ? Math.min(s.duration, now - s.startAt) : 0;
-    if (by === 'stopped') s.longestPause = Math.max(s.longestPause, now - s.lastInput);
+    s.elapsed = s.firstKey ? now - s.firstKey : 0;
+    s.overtime = s.bellAt ? now - s.bellAt : 0;
     s.phase = 'done';
     release();
     const text = editor.value;
@@ -421,14 +511,15 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
     renderResult(text, s);
   }
 
-  // stopped too long: the editor is wiped and the session is over, but the text is kept for copying
+  // stopped too long: the page is wiped and the session is over, but the text is kept for copying
   function erase() {
     const now = performance.now();
     const text = editor.value;
     s.endedBy = 'erased';
-    s.elapsed = now - s.startAt;
+    s.elapsed = now - s.firstKey;
+    s.roundElapsed = now - s.roundStart;
     s.longestPause = Math.max(s.longestPause, now - s.lastInput);
-    s.phase = 'failed';
+    s.phase = 'done';
     editor.value = '';
     release();
     if (text.trim()) store.set('nonstop.last', { text, at: Date.now(), elapsed: s.elapsed, minutes: s.duration / 60000 });
@@ -442,21 +533,20 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
     const planned = Math.round(info.duration / 60000);
     const by = info.endedBy;
     const title = $('res-title');
-    title.textContent = by === 'time' ? "Time's up. You made it."
-      : by === 'stopped' ? 'You stopped. Session closed.'
-      : by === 'erased' ? 'You stopped. Text erased.'
+    title.textContent = by === 'finished' ? 'Done. You made it.'
+      : by === 'erased' ? 'You stopped. Page wiped.'
       : by === 'early' ? 'You gave up.'
       : 'Last text';
-    title.classList.toggle('fail', by === 'stopped' || by === 'early' || by === 'erased');
-    $('res-sub').textContent = by === 'erased'
-      ? `You paused ${(info.longestPause / 1000).toFixed(1)} s at ${mmss(info.elapsed)} of ${planned}:00. This session is over, but you can still copy what you wrote.`
-      : by === 'last'
+    title.className = by === 'finished' ? 'win' : (by === 'erased' || by === 'early') ? 'fail' : '';
+    $('res-sub').textContent = by === 'last'
       ? new Date(info.at).toLocaleString('en-US', { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' })
-      : by === 'time'
-        ? `${planned} ${planned === 1 ? 'minute' : 'minutes'} without stopping. The editor is locked now, but your text is yours to copy.`
-        : `You made it ${mmss(info.elapsed)} of ${planned}:00. You can't keep writing in this session, but you can copy what you wrote.`;
+      : by === 'finished'
+        ? `${mmssUp(info.elapsed)} of writing` + (info.overtime > 5000 ? `, including ${mmssUp(info.overtime)} after the bell.` : '.') + ' Your text is below.'
+        : by === 'erased'
+          ? `You paused at ${mmss(info.roundElapsed)} of a ${planned}:00 round. The session is over, but you can still copy what you wrote.`
+          : `You stopped at ${mmssUp(info.elapsed)}. You can still copy what you wrote.`;
 
-    const cells = [['words', fmt(c.words)], ['characters', fmt(c.chars)], ['without spaces', fmt(c.noSpaces)],
+    const cells = [['words', fmt(c.words)], ['characters', fmt(c.chars)], ['no spaces', fmt(c.noSpaces)],
       by === 'last' ? ['sentences', fmt(c.sentences)] : ['words / min', fmt(wpm)]];
     $('figures').innerHTML = cells.map(([k, v]) => `<div><span class="label">${k}</span><b>${v}</b></div>`).join('');
 
@@ -480,16 +570,18 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
     const t = $('toast'); t.textContent = msg; t.hidden = false;
     clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 2200);
   }
-  function selectOut() {
+  function copyText(text, selectFallback) {
+    const p = navigator.clipboard?.writeText(text);
+    if (!p) { selectFallback(); toast('Selected. Press ⌘C to copy'); return; }
+    p.then(() => toast('Copied')).catch(() => { selectFallback(); toast('Selected. Press ⌘C to copy'); });
+  }
+  $('copy').addEventListener('click', () => copyText($('textout').textContent, () => {
     const r = document.createRange(); r.selectNodeContents($('textout'));
     const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
-  }
-  $('copy').addEventListener('click', () => {
-    const text = $('textout').textContent;
-    const p = navigator.clipboard?.writeText(text);
-    if (!p) { selectOut(); toast('Text selected. Press ⌘C to copy'); return; }
-    p.then(() => toast('Copied')).catch(() => { selectOut(); toast('Text selected. Press ⌘C to copy'); });
-  });
+  }));
+  $('bell-copy').addEventListener('click', () => copyText(editor.value, () => { editor.focus(); editor.select(); }));
+  $('bell-round').addEventListener('click', newRound);
+  $('bell-finish').addEventListener('click', () => finish('finished'));
 
   // ---------- nav ----------
   $('start').addEventListener('click', startSession);
@@ -503,7 +595,7 @@ textarea#editor::placeholder { color: var(--muted); font-style: italic; }
     const last = store.get('nonstop.last'); if (!last) return;
     renderResult(last.text, { endedBy: 'last', at: last.at, elapsed: last.elapsed || 0, duration: (last.minutes || 0) * 60000, longestPause: 0 });
   });
-  window.addEventListener('beforeunload', e => { if (s && s.phase === 'writing') { e.preventDefault(); e.returnValue = ''; } });
+  window.addEventListener('beforeunload', e => { if (s && (s.phase === 'writing' || s.phase === 'free')) { e.preventDefault(); e.returnValue = ''; } });
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter' && !$('setup').hidden && document.activeElement?.tagName !== 'BUTTON') startSession();
   });
